@@ -1,10 +1,15 @@
 import { Text } from "react-native";
-import { View } from "react-native";
-import { ExpensesType } from "../../@types";
-import { ExpenseItemView, ExpenseTitle, ExpenseType, ExpenseValue } from "./style";
+
+import { ExpensesType, FixedExpensesType } from "../../@types";
+
+import { ExpenseFixedItemView, ExpenseItemView, ExpenseTitle, ExpenseType, ExpenseValue } from "./style";
 
 type ExpenseItemProps = {
   expense: ExpensesType
+}
+
+type ExpenseFixedItemProps = {
+  expense: FixedExpensesType
 }
 
 export function ExpenseItem({expense}: ExpenseItemProps) {
@@ -14,5 +19,16 @@ export function ExpenseItem({expense}: ExpenseItemProps) {
       <ExpenseType>{expense.type === 'entrada' ? '+' : '-'}</ExpenseType>
       <ExpenseValue>{expense.value}</ExpenseValue>
     </ExpenseItemView>
+  )
+}
+
+export function ExpenseFixedItem({expense}: ExpenseFixedItemProps) {
+  return (
+    <ExpenseFixedItemView type={expense.type}>
+      <ExpenseTitle>{expense.name}</ExpenseTitle>
+      <ExpenseType>{expense.type === 'entrada' ? '+' : '-'}</ExpenseType>
+      <ExpenseValue>{expense.value}</ExpenseValue>
+      <Text>{expense.isValid}</Text>
+    </ExpenseFixedItemView>
   )
 }

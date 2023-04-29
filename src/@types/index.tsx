@@ -3,3 +3,8 @@ export type ExpensesType = {
   value: string
   type: string
 }
+
+export interface FixedExpensesType extends ExpensesType {
+  isValid: boolean
+}  
+

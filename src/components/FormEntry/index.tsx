@@ -24,12 +24,13 @@ export function FormEntry() {
   const [costType, setCostType] = useState(false)
   const [nameCosts, setNameCosts] = useState('')
   const [valueCosts, setValueCosts] = useState(0)
-
+  const [isFixed, setIsFixed] = useState(false)
+  
   function SubmitPayments() {
     const value = `R$ ${valueCosts}`
     const type = costType ? 'entrada' : 'despesa'
 
-    IncludeExpenses(nameCosts, value, type)
+    IncludeExpenses(nameCosts, value, type, isFixed)
 
     handleAddItem()
   }
@@ -43,6 +44,14 @@ export function FormEntry() {
         onChangeText={setNameCosts}
         value={nameCosts}
       />
+      <ValueSwitch>
+          <Text>Tipo: {isFixed ? 'Fixo' : 'Variável'}</Text>
+          <Switch 
+            aria-label="type"
+            onValueChange={() => setIsFixed(!isFixed)}
+            value={isFixed}
+          />
+      </ValueSwitch>
       <ValueSection>
         <ValueSwitch>
           <Text>Tipo: {costType ? 'Entrada' : 'Despesa'}</Text>
@@ -56,7 +65,7 @@ export function FormEntry() {
           <Text>Valor</Text>
           <InputNumber 
             value={valueCosts}
-            onChangeValue={(text) => setValueCosts(text || 0)}
+            onChangeValue={(text: number) => setValueCosts(text || 0)}
             prefix="R$"
           />
         </ValueInput>

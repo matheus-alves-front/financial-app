@@ -18,6 +18,10 @@ export const ExpenseItemView = styled(View)<ExpenseItemViewProps>`
   margin-bottom: 10px;
 `
 
+export const ExpenseFixedItemView = styled(ExpenseItemView)`
+  background-color: ${colors.blue}
+`
+
 export const ExpenseTitle = styled(Text)`
   margin-right: auto;
   color: ${colors.white};
