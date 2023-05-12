@@ -6,10 +6,13 @@ export const themeLight = {
     lightBlue: '#3e6d87',
     darkBlue: '#3a5260',
     gray: '#dfd9d9',
+    lightGray: '#E7E9EE',
     red: '#bb3c45',
+    lightRed: 'rgba(229, 46, 77, .5)',
     orange: '#e5715a',
     yellow: '#d19654',
     green: '#3c6b65',
+    lightGreen: 'rgba(51, 204, 149, .5)',
     white: '#FFFFFF',
     black: '#000000'
   }

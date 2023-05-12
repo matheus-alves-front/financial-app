@@ -9,11 +9,12 @@ const {
 
 export const Container = styled(View)`
   background-color: ${colors.white};
-  width: 90%;
+  margin-top: auto;
+  height: 50%;
+  width: 100%;
   border: 1px solid ${colors.blue};
   border-radius: 10px;
   padding: 15px;
-  margin: 30px;
   margin-bottom: 0;
   gap: 5px;
   justify-content: center;

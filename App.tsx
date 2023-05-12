@@ -5,6 +5,8 @@ import { TotalExpenses } from './src/components/TotalExpenses';
 import { ModalContextProvider } from './src/context/ModalContext';
 import { ModalForm } from './src/components/ModalForm';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Dashboard } from './src/components/Dashboard';
+import { Header } from './src/components/Header';
 
 export default function App() {
   return (
@@ -12,9 +14,11 @@ export default function App() {
       <ModalContextProvider>
         <SafeAreaProvider>
           <View style={styles.container}>
-            <ModalForm />
+            <Header />
+            <Dashboard />
+            {/* <TotalExpenses /> */}
             <ExpensesBoard />
-            <TotalExpenses />
+            {/* <Dashboard /> */}
           </View>
         </SafeAreaProvider>
       </ModalContextProvider>
@@ -25,7 +29,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#F0F2F5',
     alignItems: 'center',
     justifyContent: 'flex-start',
   },

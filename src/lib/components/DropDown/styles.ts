@@ -22,9 +22,8 @@ export const DropwDownTitle = styled(Text)<DropDownViewProps>`
   text-transform: uppercase;
   font-weight: bold;
   padding: 10px;
-  text-shadow-color: #000;
-  text-shadow-offset: { width: 1, height: 1 };
-  text-shadow-radius: 2;
+  text-shadow-color: ${colors.darkBlue};
+
 `
 export const DropwDownContent = styled(View)<DropDownViewProps>`
   width: 100%;

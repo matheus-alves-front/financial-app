@@ -7,22 +7,17 @@ import { ModalContext } from "../../context/ModalContext"
 const {colors} = themeLight
 
 const Button = styled(TouchableOpacity)`
-  width: 50px;
-  height: 50px;
   background-color: ${colors.orange};
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-  position: absolute;
-  bottom: 70px;
-  right: 15px;
   z-index: 1;
+  padding: 10px;
 `
 
 const ButtonText = styled(Text)`
   color: ${colors.white};
-  font-size: 36px;
-  margin-bottom: 2px;
+  font-size: 15px;
 `
 
 export function AddItem() {
@@ -33,7 +28,7 @@ export function AddItem() {
 
   return (
     <Button onPress={handleAddItem}>
-      <ButtonText>{!isAddItem ? '+' : '-'}</ButtonText>
+      <ButtonText>Nova Transação</ButtonText>
     </Button>
   )
 }

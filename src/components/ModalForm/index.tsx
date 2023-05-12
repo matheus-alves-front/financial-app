@@ -8,7 +8,7 @@ export function ModalForm() {
 
   return (
     <>
-      {isAddItem ? <FormEntry /> : null}
+      <FormEntry /> 
       <AddItem />
     </>
   )
