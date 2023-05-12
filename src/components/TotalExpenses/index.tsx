@@ -1,16 +1,15 @@
-import { Text } from "react-native";
-import { View } from "react-native";
 import { TextFooter, TotalFooter } from "./style";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { ExpensesContext } from "../../context/ExpensesContext";
+import { Pressable } from "react-native";
 
 export function TotalExpenses() {
-  const {total} = useContext(ExpensesContext)
+  const {totalPrice} = useContext(ExpensesContext)
 
   return (
-    <TotalFooter>
-      <TextFooter>Total:</TextFooter>
-      <TextFooter>R${total}</TextFooter>
-    </TotalFooter>
+      <TotalFooter onPress={(e) => console.log(e.target)}>
+        <TextFooter>Total:</TextFooter>
+        <TextFooter>{totalPrice}</TextFooter>
+      </TotalFooter>
   )
 }

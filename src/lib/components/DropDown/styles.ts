@@ -9,7 +9,6 @@ interface DropDownViewProps {
 }
 
 export const DropDownView = styled(View)<DropDownViewProps>`
-  border: 1px solid ${colors.blue};
   background-color: ${props => props.isDrop ? colors.blue : colors.white};
   width: 100%;
   border-radius: 10px;
@@ -23,6 +22,9 @@ export const DropwDownTitle = styled(Text)<DropDownViewProps>`
   text-transform: uppercase;
   font-weight: bold;
   padding: 10px;
+  text-shadow-color: #000;
+  text-shadow-offset: { width: 1, height: 1 };
+  text-shadow-radius: 2;
 `
 export const DropwDownContent = styled(View)<DropDownViewProps>`
   width: 100%;

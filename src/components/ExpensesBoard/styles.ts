@@ -3,6 +3,7 @@ import styled from "styled-components"
 
 export const Container = styled(View)`
   width: 100%;
+  padding: 20px;
   padding-top: 30px;
   margin-bottom: 60px;
   flex: 1;

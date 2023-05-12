@@ -1,4 +1,4 @@
-import styled from 'styled-components/native'
+import styled from 'styled-components'
 import { TextInput, View, Text, Switch, TouchableOpacity } from "react-native"
 import CurrencyInput from 'react-native-currency-input';
 import { themeLight } from '../../styles/colors'
@@ -8,11 +8,13 @@ const {
 } = themeLight
 
 export const Container = styled(View)`
-  background-color: ${colors.gray};
-  width: 100%;
+  background-color: ${colors.white};
+  width: 90%;
+  border: 1px solid ${colors.blue};
   border-radius: 10px;
   padding: 15px;
-  margin-top: 30px;
+  margin: 30px;
+  margin-bottom: 0;
   gap: 5px;
   justify-content: center;
   align-items: flex-start;

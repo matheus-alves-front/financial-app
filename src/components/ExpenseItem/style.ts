@@ -5,14 +5,14 @@ import { themeLight } from '../../styles/colors'
 const {colors} = themeLight
 
 interface ExpenseItemViewProps {
-  type: string;
+  isEntry: boolean;
 }
 
 export const ExpenseItemView = styled(View)<ExpenseItemViewProps>`
   width: 100%;
   justify-content: space-between;
   flex-direction: row;
-  background-color: ${props => props.type === "entrada" ? colors.green : colors.red};
+  background-color: ${props => props.isEntry ? colors.green : colors.red};
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 10px;

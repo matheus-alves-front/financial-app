@@ -1,7 +1,8 @@
 export type ExpensesType = {
   name: string
-  value: string
-  type: string
+  value: number
+  isEntry: boolean
+  isFixed: boolean 
 }
 
 export interface FixedExpensesType extends ExpensesType {

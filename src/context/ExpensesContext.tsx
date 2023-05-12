@@ -1,23 +1,18 @@
-import { ReactNode, createContext, useEffect, useState } from "react";
-
-type ExpensesType = {
-  name: string
-  value: string
-  type: string
-}
-
-interface FixedExpensesType extends ExpensesType {
-  isValid: boolean
-}  
+import axios from "axios";
+import { ReactNode, createContext, useEffect, useLayoutEffect, useState } from "react";
+import Constants from 'expo-constants';
+import { ExpensesType } from "../@types";
+import { DivideExpensesTypeArrays, FetchExpenses } from "../lib/utils/fetch-expenses-rules";
 
 type ExpensesContentTypes = {
   expenses: ExpensesType[]
-  fixedExpenses: FixedExpensesType[]
+  fixedExpenses: ExpensesType[]
   total: number
+  totalPrice: string
   IncludeExpenses: (
     name: string,
-    value: string,
-    type: string,
+    value: number,
+    isEntry: boolean,
     isFixed: boolean
   ) => void
 }
@@ -29,84 +24,99 @@ type ExpensesContentProviderTypes = {
 export const ExpensesContext = createContext({} as ExpensesContentTypes)
 
 export function ExpensesContextProvider({children}: ExpensesContentProviderTypes) {
+  const apiUrl = Constants?.expoConfig?.extra?.apiUrl
   const [expenses, setExpenses] = useState<ExpensesType[]>([])
-  const [fixedExpenses, setFixedExpenses] = useState<FixedExpensesType[]>([])
+  const [fixedExpenses, setFixedExpenses] = useState<ExpensesType[]>([])
 
   const [total, setTotal] = useState(0)
 
-  function IncludeExpenses(
+  const [totalPrice, setTotalPrice] = useState('R$00.00')
+
+  async function IncludeExpenses(
     name: string,
-    value: string,
-    type: string,
+    value: number,
+    isEntry: boolean,
     isFixed: boolean
   ) {
-    
-    if (isFixed) {
-      const newFixedExpense = {
-        name,
-        value,
-        type,
-        isValid: false
-      }
-
-      setFixedExpenses(prevExpenses => prevExpenses.concat(newFixedExpense))
-
-      return
-    }
-
-    const newExpense = {
+    const data = {
       name,
-      value,
-      type
+      isFixed,
+      isEntry,
+      value
     }
 
-    setExpenses(prevExpenses => prevExpenses.concat(newExpense))
+    const postExpense = await fetch(`${apiUrl}/expenses`, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+    const expenseSent = await postExpense.json()
+
+    
+    const {expenses, fixedExpenses} = await FetchExpenses()
+    
+    setExpenses(expenses)
+    setFixedExpenses(fixedExpenses)
+
+    return expenseSent
   }
 
   useEffect(() => {
     calcTotal()
   }, [expenses, fixedExpenses])
 
+
+  useEffect(() => {
+    FetchExpenses().then(expenses => {
+      setExpenses(expenses.expenses)
+      setFixedExpenses(expenses.fixedExpenses)
+    })
+  }, [])
+
+
   function calcTotal() {
     const valuesArray: number[] = []
     let total = 0
 
     expenses.map((item) => {
-      const valueString = item.value.replace('R$', '').replace(' ', '')
-      const valueNumber = parseFloat(valueString)
+      const value = item.value
       
-      valuesArray.push(valueNumber)
+      valuesArray.push(value)
 
-      if (item.type === 'entrada') {
-        total = total + valueNumber
+      if (item.isEntry) {
+        total = total + value
       } else {
-        total = total - valueNumber
+        total = total - value
       }
     })
 
     fixedExpenses.map((item) => {
-      const valueString = item.value.replace('R$', '').replace(' ', '')
-      const valueNumber = parseFloat(valueString)
+      const value = item.value
       
-      valuesArray.push(valueNumber)
+      valuesArray.push(value)
 
-      // if (!item.isValid) return
-
-      if (item.type === 'entrada') {
-        total = total + valueNumber
+      if (item.isEntry) {
+        total = total + value
       } else {
-        total = total - valueNumber
+        total = total - value
       }
     })
 
     setTotal(total)
   }
 
+  useEffect(() => {
+    setTotalPrice(`R$${total.toFixed(2)}`)
+  }, [total])
+
   return (
     <ExpensesContext.Provider value={{
       expenses,
       fixedExpenses,
       IncludeExpenses,
+      totalPrice,
       total
     }}>
       {children}

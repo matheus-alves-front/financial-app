@@ -28,9 +28,8 @@ export function FormEntry() {
   
   function SubmitPayments() {
     const value = `R$ ${valueCosts}`
-    const type = costType ? 'entrada' : 'despesa'
 
-    IncludeExpenses(nameCosts, value, type, isFixed)
+    IncludeExpenses(nameCosts, valueCosts, costType, isFixed)
 
     handleAddItem()
   }

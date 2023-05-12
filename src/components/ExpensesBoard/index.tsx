@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { FlatList, Text } from "react-native";
 import { ExpensesContext } from "../../context/ExpensesContext";
-import { ExpenseFixedItem, ExpenseItem } from "../ExpenseItem";
+import { ExpenseItem } from "../ExpenseItem";
 import { Container } from "./styles";
 import { DropDown } from "../../lib/components/DropDown";
 

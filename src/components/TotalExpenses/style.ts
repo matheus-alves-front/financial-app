@@ -1,4 +1,4 @@
-import { Text, View } from "react-native"
+import { Pressable, Text, View } from "react-native"
 import styled from "styled-components"
 import { themeLight } from '../../styles/colors'
 
@@ -6,8 +6,8 @@ const {
   colors
 } = themeLight
 
-export const TotalFooter = styled(View)`
-  width: 105%;
+export const TotalFooter = styled(Pressable)`
+  width: 100%;
   padding: 20px;
   background-color: ${colors.blue};
   flex-direction: row;
