@@ -5,6 +5,17 @@ export type ExpensesType = {
   isFixed: boolean 
 }
 
+export type MonthType = {
+  id: number
+  month: number
+  year: number
+  totalExpenses: number
+  totalFixedExpenses: number
+  totalEntryExpenses: number
+  totalFixedEntryExpenses: number
+  totalAmountLeft: number
+}
+
 export interface FixedExpensesType extends ExpensesType {
   isValid: boolean
 }  

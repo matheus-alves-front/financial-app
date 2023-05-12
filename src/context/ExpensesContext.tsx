@@ -1,8 +1,9 @@
 import axios from "axios";
-import { ReactNode, createContext, useEffect, useLayoutEffect, useState } from "react";
+import { ReactNode, createContext, useContext, useEffect, useLayoutEffect, useState } from "react";
 import Constants from 'expo-constants';
 import { ExpensesType } from "../@types";
 import { DivideExpensesTypeArrays, FetchExpenses } from "../lib/utils/fetch-expenses-rules";
+import { MonthContext } from "./MonthContext";
 
 type ExpensesContentTypes = {
   expenses: ExpensesType[]
@@ -24,12 +25,13 @@ type ExpensesContentProviderTypes = {
 export const ExpensesContext = createContext({} as ExpensesContentTypes)
 
 export function ExpensesContextProvider({children}: ExpensesContentProviderTypes) {
+  const { UpdateMonth } = useContext(MonthContext)
   const apiUrl = Constants?.expoConfig?.extra?.apiUrl
+
   const [expenses, setExpenses] = useState<ExpensesType[]>([])
   const [fixedExpenses, setFixedExpenses] = useState<ExpensesType[]>([])
 
   const [total, setTotal] = useState(0)
-
   const [totalPrice, setTotalPrice] = useState('R$00.00')
 
   async function IncludeExpenses(
@@ -59,6 +61,8 @@ export function ExpensesContextProvider({children}: ExpensesContentProviderTypes
     
     setExpenses(expenses)
     setFixedExpenses(fixedExpenses)
+
+    UpdateMonth()
 
     return expenseSent
   }

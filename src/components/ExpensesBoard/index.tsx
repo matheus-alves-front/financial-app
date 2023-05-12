@@ -22,7 +22,7 @@ export function ExpensesBoard() {
             renderItem={({item}) => <ExpenseItem expense={item} />}
           />
           :
-          <Text>Você ainda não adicionou gastos fixos</Text>
+          <Text style={{color: '#fff', paddingBottom: 15}}>Você ainda não adicionou gastos fixos</Text>
         }
       </DropDown>
       {expenses.length ? null : <Text>Você ainda não adicionou itens</Text>}
@@ -42,6 +42,6 @@ const styles = StyleSheet.create({
     padding: 15
   },
   expensesList: {
-    width: '100%'
+    width: '100%',
   }
 })

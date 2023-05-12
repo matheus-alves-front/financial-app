@@ -1,10 +1,25 @@
 import { Text, View, StyleSheet, ScrollView } from 'react-native'
 import { themeLight } from '../../styles/colors'
 import { ExpenseIcon } from '../../lib/Icons/ExpenseIcons'
+import { useContext } from 'react'
+import { MonthContext } from '../../context/MonthContext'
 
 const { colors } = themeLight
 
 export function Dashboard() {
+  const monthContext = useContext(MonthContext)
+
+  const { 
+    month,
+    totalAmountLeft,
+    totalEntryExpenses,
+    totalExpenses,
+    totalFixedEntryExpenses,
+    totalFixedExpenses,
+    year
+  } = monthContext.month
+
+
   return (
     <View style={styles.dashboardSection}>
       <ScrollView style={styles.dashboardContent} horizontal>
@@ -13,26 +28,27 @@ export function Dashboard() {
             <Text style={styles.dashBoardTitle}>Saídas</Text>
             <ExpenseIcon isEntry={false} />
           </View>
-          <Text style={[styles.dashboardValue, styles.expenseColor]}>R$5000,00</Text>
-          <Text style={styles.subText}>Variável: R$2900</Text>
-          <Text style={styles.subText}>Fixo: R$00,00</Text>
+          <Text style={[styles.dashboardValue, styles.expenseColor]}>R${totalExpenses}</Text>
+          <Text style={styles.subText}>Fixo: R${totalFixedExpenses}</Text>
+          {/* <Text style={styles.subText}>Variável: R${Number(totalExpenses - totalFixedExpenses)}</Text> */}
         </View>
         <View style={[styles.dashboardItem, styles.entryColor]}>
           <View style={styles.titleSection}>
             <Text style={styles.dashBoardTitle}>Entradas</Text>
             <ExpenseIcon isEntry={true} />
           </View>
-          <Text style={[styles.dashboardValue, styles.entryColor]}>R$16000,00</Text>
-          <Text style={styles.subText}>Variável: R$00,00</Text>
-          <Text style={styles.subText}>Fixo: R$00,00</Text>
+          <Text style={[styles.dashboardValue, styles.entryColor]}>R${totalEntryExpenses}</Text>
+          <Text style={styles.subText}>Fixo: R${totalFixedEntryExpenses}</Text>
+          {/* <Text style={styles.subText}>Variável: R${Number(totalEntryExpenses - totalFixedEntryExpenses)}</Text> */}
         </View>
         <View style={styles.dashboardItem}>
           <View style={styles.titleSection}>
             <Text style={[styles.dashBoardTitle, styles.entryColor]}>Total</Text>
             <ExpenseIcon isEntry={true} />
           </View>
-          <Text style={[styles.dashboardValue, styles.entryColor]}>R$109000,00</Text>
-          <Text style={styles.subText}>R$00,00 a mais do que o Mês Passado</Text>
+          <Text style={[styles.dashboardValue, styles.entryColor]}>R${totalAmountLeft}</Text>
+          {/* <Text style={styles.subText}>R$00,00 a mais do que o Mês Passado</Text> */}
+          <Text style={styles.subText}>{month}/{year}</Text>
         </View>
       </ScrollView>
     </View>

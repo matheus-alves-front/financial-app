@@ -7,22 +7,25 @@ import { ModalForm } from './src/components/ModalForm';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Dashboard } from './src/components/Dashboard';
 import { Header } from './src/components/Header';
+import { MonthContextProvider } from './src/context/MonthContext';
 
 export default function App() {
   return (
-    <ExpensesContextProvider>
-      <ModalContextProvider>
-        <SafeAreaProvider>
-          <View style={styles.container}>
-            <Header />
-            <Dashboard />
-            {/* <TotalExpenses /> */}
-            <ExpensesBoard />
-            {/* <Dashboard /> */}
-          </View>
-        </SafeAreaProvider>
-      </ModalContextProvider>
-    </ExpensesContextProvider>
+    <MonthContextProvider>
+      <ExpensesContextProvider>
+        <ModalContextProvider>
+          <SafeAreaProvider>
+            <View style={styles.container}>
+              <Header />
+              <Dashboard />
+              {/* <TotalExpenses /> */}
+              <ExpensesBoard />
+              {/* <Dashboard /> */}
+            </View>
+          </SafeAreaProvider>
+        </ModalContextProvider>
+      </ExpensesContextProvider>
+    </MonthContextProvider>
   );
 }
 

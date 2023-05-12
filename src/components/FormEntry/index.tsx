@@ -25,7 +25,6 @@ export function FormEntry() {
   function SubmitPayments() {
     IncludeExpenses(name, value, isEntry, isFixed)
 
-    console.log(name, value, isEntry, isFixed)
     handleAddItem()
   }
 
