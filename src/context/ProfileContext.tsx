@@ -14,6 +14,7 @@ type ProfileContextProps = {
     password: string
   ) => void,
   errorLoginMessage: string
+  errorRegisterMessage: string
 }
 
 type ProfileContextProviderProps = {
@@ -29,6 +30,7 @@ export function ProfileContextProvider({
 
   const [profile, setProfile] = useState<ProfileType>()
   const [errorLoginMessage, setErrorLoginMessage] = useState("")
+  const [errorRegisterMessage, setErrorRegisterMessage] = useState("")
 
   async function CreateProfile(name: string, password: string) {
     const data = {
@@ -45,7 +47,8 @@ export function ProfileContextProvider({
     })
     const profileSent = await postProfile.json()
 
-    setProfile(profileSent)
+    if (profileSent.id) setProfile(profileSent)
+    setErrorRegisterMessage('Usuário Já Existe')
   }
 
   async function Login(name: string, password: string) {
@@ -73,8 +76,9 @@ export function ProfileContextProvider({
     <ProfileContext.Provider value={{
       profile,
       CreateProfile,
+      errorRegisterMessage,
       Login,
-      errorLoginMessage
+      errorLoginMessage,
     }}
     >
       {children}
