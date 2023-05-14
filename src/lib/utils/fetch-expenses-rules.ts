@@ -4,7 +4,7 @@ import Constants from 'expo-constants';
 export function DivideExpensesTypeArrays(expensesArray: ExpensesType[]) {
   let expenses: ExpensesType[] = [] 
   let fixedExpenses: ExpensesType[] = []
-  
+
   expensesArray.map((expense) => {
     if (expense.isFixed) {
       fixedExpenses.push(expense)
@@ -19,10 +19,10 @@ export function DivideExpensesTypeArrays(expensesArray: ExpensesType[]) {
   }
 }
 
-export async function FetchExpenses() {
+export async function FetchExpenses(profileId: number) {
   const apiUrl = Constants?.expoConfig?.extra?.apiUrl
 
-  const expensesResponse = await fetch(`${apiUrl}/expenses`)
+  const expensesResponse = await fetch(`${apiUrl}/profile/${profileId}/expenses`)
   const expensesData: ExpensesType[] = await expensesResponse.json()
 
   const {expenses, fixedExpenses} = DivideExpensesTypeArrays(expensesData)

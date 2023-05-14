@@ -16,7 +16,8 @@ export type MonthType = {
   totalAmountLeft: number
 }
 
-export interface FixedExpensesType extends ExpensesType {
-  isValid: boolean
-}  
-
+export type ProfileType = {
+  id: number
+  name: string
+  password?: string
+}

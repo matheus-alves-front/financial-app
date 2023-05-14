@@ -1,25 +1,28 @@
 import { Text, View, StyleSheet, ScrollView } from 'react-native'
 import { themeLight } from '../../styles/colors'
 import { ExpenseIcon } from '../../lib/Icons/ExpenseIcons'
-import { useContext } from 'react'
-import { MonthContext } from '../../context/MonthContext'
 
 const { colors } = themeLight
 
-export function Dashboard() {
-  const monthContext = useContext(MonthContext)
+type DashboardProps = {
+  month: number
+  totalAmountLeft: number
+  totalEntryExpenses: number
+  totalExpenses: number
+  totalFixedEntryExpenses: number
+  totalFixedExpenses: number
+  year: number
+}
 
-  const { 
-    month,
-    totalAmountLeft,
-    totalEntryExpenses,
-    totalExpenses,
-    totalFixedEntryExpenses,
-    totalFixedExpenses,
-    year
-  } = monthContext.month
-
-
+export function Dashboard({ 
+  month,
+  totalAmountLeft,
+  totalEntryExpenses,
+  totalExpenses,
+  totalFixedEntryExpenses,
+  totalFixedExpenses,
+  year
+}: DashboardProps) {
   return (
     <View style={styles.dashboardSection}>
       <ScrollView style={styles.dashboardContent} horizontal>
@@ -48,7 +51,7 @@ export function Dashboard() {
           </View>
           <Text style={[styles.dashboardValue, styles.entryColor]}>R${totalAmountLeft}</Text>
           {/* <Text style={styles.subText}>R$00,00 a mais do que o Mês Passado</Text> */}
-          <Text style={styles.subText}>{month}/{year}</Text>
+          <Text style={styles.subText}>Data: {month}/{year}</Text>
         </View>
       </ScrollView>
     </View>

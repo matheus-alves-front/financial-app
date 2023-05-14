@@ -2,8 +2,9 @@ import axios from "axios";
 import { ReactNode, createContext, useContext, useEffect, useLayoutEffect, useState } from "react";
 import Constants from 'expo-constants';
 import { ExpensesType } from "../@types";
-import { DivideExpensesTypeArrays, FetchExpenses } from "../lib/utils/fetch-expenses-rules";
+import { FetchExpenses } from "../lib/utils/fetch-expenses-rules";
 import { MonthContext } from "./MonthContext";
+import { ProfileContext } from "./ProfileContext";
 
 type ExpensesContentTypes = {
   expenses: ExpensesType[]
@@ -25,6 +26,7 @@ type ExpensesContentProviderTypes = {
 export const ExpensesContext = createContext({} as ExpensesContentTypes)
 
 export function ExpensesContextProvider({children}: ExpensesContentProviderTypes) {
+  const { profile } = useContext(ProfileContext)
   const { UpdateMonth } = useContext(MonthContext)
   const apiUrl = Constants?.expoConfig?.extra?.apiUrl
 
@@ -47,7 +49,7 @@ export function ExpensesContextProvider({children}: ExpensesContentProviderTypes
       value
     }
 
-    const postExpense = await fetch(`${apiUrl}/expenses`, {
+    const postExpense = await fetch(`${apiUrl}/profile/${profile.id}/expenses`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json"
@@ -57,7 +59,7 @@ export function ExpensesContextProvider({children}: ExpensesContentProviderTypes
     const expenseSent = await postExpense.json()
 
     
-    const {expenses, fixedExpenses} = await FetchExpenses()
+    const {expenses, fixedExpenses} = await FetchExpenses(profile.id)
     
     setExpenses(expenses)
     setFixedExpenses(fixedExpenses)
@@ -73,10 +75,12 @@ export function ExpensesContextProvider({children}: ExpensesContentProviderTypes
 
 
   useEffect(() => {
-    FetchExpenses().then(expenses => {
-      setExpenses(expenses.expenses)
-      setFixedExpenses(expenses.fixedExpenses)
-    })
+    if (profile.id) {
+      FetchExpenses(profile.id).then(expenses => {
+        setExpenses(expenses.expenses)
+        setFixedExpenses(expenses.fixedExpenses)
+      })
+    }
   }, [])
 
 

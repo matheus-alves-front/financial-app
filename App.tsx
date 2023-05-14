@@ -1,31 +1,27 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { ExpensesContextProvider } from './src/context/ExpensesContext';
 import { ExpensesBoard } from './src/components/ExpensesBoard';
-import { TotalExpenses } from './src/components/TotalExpenses';
 import { ModalContextProvider } from './src/context/ModalContext';
-import { ModalForm } from './src/components/ModalForm';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Dashboard } from './src/components/Dashboard';
-import { Header } from './src/components/Header';
 import { MonthContextProvider } from './src/context/MonthContext';
+import { ProfileContextProvider } from './src/context/ProfileContext';
+import { Main } from './src/views/Main';
 
 export default function App() {
   return (
-    <MonthContextProvider>
-      <ExpensesContextProvider>
-        <ModalContextProvider>
-          <SafeAreaProvider>
-            <View style={styles.container}>
-              <Header />
-              <Dashboard />
-              {/* <TotalExpenses /> */}
-              <ExpensesBoard />
-              {/* <Dashboard /> */}
-            </View>
-          </SafeAreaProvider>
-        </ModalContextProvider>
-      </ExpensesContextProvider>
-    </MonthContextProvider>
+    <ProfileContextProvider>
+      <MonthContextProvider>
+        <ExpensesContextProvider>
+          <ModalContextProvider>
+            <SafeAreaProvider>
+              <View style={styles.container}>
+                <Main />
+              </View>
+            </SafeAreaProvider>
+          </ModalContextProvider>
+        </ExpensesContextProvider>
+      </MonthContextProvider>
+    </ProfileContextProvider>
   );
 }
 
