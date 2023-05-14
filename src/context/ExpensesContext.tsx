@@ -1,5 +1,4 @@
-import axios from "axios";
-import { ReactNode, createContext, useContext, useEffect, useLayoutEffect, useState } from "react";
+import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import Constants from 'expo-constants';
 import { ExpensesType } from "../@types";
 import { FetchExpenses } from "../lib/utils/fetch-expenses-rules";
