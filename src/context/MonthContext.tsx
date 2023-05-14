@@ -21,6 +21,13 @@ export function MonthContextProvider({
   const { profile } = useContext(ProfileContext)
 
   const [month, setMonth] = useState<MonthType>({
+    month: 1,
+    year: 0,
+    totalExpenses: 0, 
+    totalFixedExpenses: 0,
+    totalEntryExpenses: 0,
+    totalFixedEntryExpenses: 0,
+    totalAmountLeft: 0
   } as MonthType)
 
   async function UpdateMonth() {
@@ -33,7 +40,7 @@ export function MonthContextProvider({
 
   useEffect(() => {
     if (!profile) return
-    FetchMonth(profile?.id).then(response => setMonth(response[0]))
+    FetchMonth(profile?.id).then(response => response.length > 0 && setMonth(response[0]))
   }, [profile])
 
   return(
