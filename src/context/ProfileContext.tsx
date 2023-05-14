@@ -3,7 +3,7 @@ import { MonthType, ProfileType } from "../@types";
 import Constants from 'expo-constants';
 
 type ProfileContextProps = {
-  profile: ProfileType,
+  profile?: ProfileType,
   CreateProfile: (
     name: string,
     password: string
@@ -21,7 +21,7 @@ export function ProfileContextProvider({
 }: ProfileContextProviderProps) {
   const apiUrl = Constants?.expoConfig?.extra?.apiUrl
 
-  const [profile, setProfile] = useState<ProfileType>({} as ProfileType)
+  const [profile, setProfile] = useState<ProfileType>()
 
   async function CreateProfile(name: string, password: string) {
     const data = {
@@ -42,7 +42,7 @@ export function ProfileContextProvider({
   }
 
   useEffect(() => {
-    fetch(`${apiUrl}/profile/3`)
+    fetch(`${apiUrl}/profile/2`)
       .then(response => response.json())
       .then(data => setProfile(data))
       .catch(err => console.log(err))

@@ -8,7 +8,5 @@ export async function FetchMonth(profileId: number) {
   // const monthResponse = await fetch(`https://financial-app-nestjs.onrender.com/profile/3/months`)
   const monthData: MonthType[] = await monthResponse.json()
 
-  console.log('monthData', monthData)
-
   return monthData
 }

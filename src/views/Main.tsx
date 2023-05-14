@@ -5,14 +5,10 @@ import { ProfileContext } from "../context/ProfileContext";
 
 export function Main() {
   const {profile} = useContext(ProfileContext)
-
-  console.log(profile)
   
   return (
     <>
-      {profile.id ? <DashboardView /> : <Login />}
-      
-      {/* <DashboardView /> */}
+      {profile?.id ? <DashboardView /> : <Login />}
     </>
   )
 }

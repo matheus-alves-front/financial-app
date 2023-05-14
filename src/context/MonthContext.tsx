@@ -21,27 +21,20 @@ export function MonthContextProvider({
   const { profile } = useContext(ProfileContext)
 
   const [month, setMonth] = useState<MonthType>({
-    id: 0,
-    month: 0,
-    totalAmountLeft: 0,
-    totalEntryExpenses: 0,
-    totalExpenses: 0,
-    totalFixedEntryExpenses: 0,
-    totalFixedExpenses: 0,
-    year: 0
   } as MonthType)
 
   async function UpdateMonth() {
+    if (!profile) return
+
     const updatedMonth = await FetchMonth(profile.id)
 
     setMonth(updatedMonth[0])
   }
 
   useEffect(() => {
-    if (profile.id) {
-      FetchMonth(profile.id).then(response => setMonth(response[0]))
-    }
-  },[])
+    if (!profile) return
+    FetchMonth(profile?.id).then(response => setMonth(response[0]))
+  }, [profile])
 
   return(
     <MonthContext.Provider value={{

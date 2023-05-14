@@ -42,6 +42,8 @@ export function ExpensesContextProvider({children}: ExpensesContentProviderTypes
     isEntry: boolean,
     isFixed: boolean
   ) {
+    if (!profile) return
+
     const data = {
       name,
       isFixed,
@@ -75,13 +77,13 @@ export function ExpensesContextProvider({children}: ExpensesContentProviderTypes
 
 
   useEffect(() => {
-    if (profile.id) {
-      FetchExpenses(profile.id).then(expenses => {
-        setExpenses(expenses.expenses)
-        setFixedExpenses(expenses.fixedExpenses)
-      })
-    }
-  }, [])
+    if (!profile) return
+
+    FetchExpenses(profile.id).then(expenses => {
+      setExpenses(expenses.expenses)
+      setFixedExpenses(expenses.fixedExpenses)
+    })
+  }, [profile])
 
 
   function calcTotal() {
