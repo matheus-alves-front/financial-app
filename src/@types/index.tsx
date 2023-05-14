@@ -2,7 +2,8 @@ export type ExpensesType = {
   name: string
   value: number
   isEntry: boolean
-  isFixed: boolean 
+  isFixed: boolean
+  category: string 
 }
 
 export type MonthType = {

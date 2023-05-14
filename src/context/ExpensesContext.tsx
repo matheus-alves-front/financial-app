@@ -14,7 +14,8 @@ type ExpensesContentTypes = {
     name: string,
     value: number,
     isEntry: boolean,
-    isFixed: boolean
+    isFixed: boolean,
+    category: string
   ) => void
 }
 
@@ -39,7 +40,8 @@ export function ExpensesContextProvider({children}: ExpensesContentProviderTypes
     name: string,
     value: number,
     isEntry: boolean,
-    isFixed: boolean
+    isFixed: boolean,
+    category: string
   ) {
     if (!profile) return
 
@@ -47,7 +49,8 @@ export function ExpensesContextProvider({children}: ExpensesContentProviderTypes
       name,
       isFixed,
       isEntry,
-      value
+      value,
+      category
     }
 
     const postExpense = await fetch(`${apiUrl}/profile/${profile.id}/expenses`, {

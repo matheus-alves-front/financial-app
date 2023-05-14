@@ -35,6 +35,7 @@ export function Login() {
         <TextInput 
           style={styles.input}
           placeholder="Senha"
+          secureTextEntry
           value={password}
           onChangeText={setPassword}
           placeholderTextColor={colors.white} 
@@ -77,6 +78,7 @@ export function Register({children}: {children: ReactNode}) {
       <TextInput 
         style={styles.input}
         placeholder="Senha"
+        secureTextEntry
         value={password}
         onChangeText={setPassword}
         placeholderTextColor={colors.white} 

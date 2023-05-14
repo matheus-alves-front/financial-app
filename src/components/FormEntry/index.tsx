@@ -1,5 +1,5 @@
-import { useContext, useState } from "react"
-import { TextInput, View, Text, Switch, TouchableOpacity, Button, StyleSheet } from "react-native"
+import { ReactNode, useContext, useEffect, useState } from "react"
+import { TextInput, View, Text, Switch, TouchableOpacity, StyleSheet } from "react-native"
 import CurrencyInput from 'react-native-currency-input';
 
 import { ModalContext } from "../../context/ModalContext"
@@ -21,12 +21,25 @@ export function FormEntry() {
   const [value, setValue] = useState(0)
   const [isEntry, setIsEntry] = useState(false)
   const [isFixed, setIsFixed] = useState(false)
+  const [category, setCategory] = useState("")
+  
   
   function SubmitPayments() {
-    IncludeExpenses(name, value, isEntry, isFixed)
-
+    IncludeExpenses(name, value, isEntry, isFixed, category)
+    
     handleAddItem()
   }
+  
+  const [isSubmit, setIsSubmit] = useState(false)
+  // const [isSelectBox, setIsSelectBox] = useState(false)
+  useEffect(() => {
+    if (!name || !value || !category) setIsSubmit(false)
+    else setIsSubmit(true)
+  }, [
+    name,
+    value,
+    category
+  ])
 
   return (
     <ModalCustom isVisible={isAddItem}>
@@ -85,15 +98,62 @@ export function FormEntry() {
                 value={isFixed}
                 />
           </View>
+          {/* {isSelectBox ?
+            <SelectBox>
+              <TextInput 
+                style={styles.input}
+                placeholder="Categoria"
+                aria-label="category"
+                onChangeText={setCategory}
+                value={category}
+              />
+              <TouchableOpacity
+                style={styles.selectFormButton}
+                onPress={() => setIsSelectBox(false)}
+              >
+              <Text>{category ? `Adicionar à ${category}` : 'Sem Categoria'}</Text>
+            </TouchableOpacity>
+            </SelectBox>
+          :
+            <TouchableOpacity
+              style={styles.categoryButton}
+              onPress={() => setIsSelectBox(true)}
+            >
+              <Text style={styles.categoryButtonText}>{category ? category : 'Adicionar Categoria'}</Text>
+            </TouchableOpacity>
+          } */}
+          <TextInput 
+            style={styles.input}
+            placeholder="Categoria"
+            aria-label="category"
+            onChangeText={setCategory}
+            value={category}
+          />
           <TouchableOpacity 
             onPress={SubmitPayments}
             style={styles.submitButton}
+            disabled={!isSubmit}
           >
             <Text style={styles.submitButtonText}>Adicionar</Text>
           </TouchableOpacity>
         </View>
       </View>
     </ModalCustom>
+  )
+}
+
+export function SelectBox({
+  children
+}: {
+  children: ReactNode
+}) {
+  return (
+    <View style={styles.categorySelect}>
+      <Text style={styles.categoryTexts}>Categorias:</Text>
+      <Text style={styles.categoryTexts}>Você ainda não tem categorias:</Text>
+
+      {children}
+    </View>
   )
 }
 
@@ -107,7 +167,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20
   },
   formEntry: {
-    height: '60%',
+    height: '75%',
     marginTop: 'auto',
     backgroundColor: colors.white,
     padding: 20,
@@ -167,6 +227,35 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     gap: 0
   },
+  categorySelect: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    margin: 'auto',
+    borderRadius: 15,
+    backgroundColor: colors.lightBlue,
+    padding: 15,
+    elevation: 10
+  },
+  categoryTexts: {
+    color: colors.white,
+    textAlign: 'center',
+    marginBottom: 15,
+    fontSize: 15,
+  },
+  selectFormButton: {
+    backgroundColor: colors.orange
+  },
+  categoryButton: {
+    backgroundColor: colors.lightGray,
+    padding: 15,
+    borderRadius: 15
+  },
+  categoryButtonText: {
+    textAlign: 'center'
+  },
   submitButton: {
     marginTop: 'auto',
     width: '100%',
@@ -174,7 +263,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: colors.blue,
-    borderRadius: 10
+    borderRadius: 10,
+    elevation: 0
   },
   submitButtonText: {
     color: colors.white
