@@ -22,10 +22,12 @@ export function ModalContextProvider({children}: ModalContextProvider) {
 
   function handleAddItem() {
     setIsAddItem(!isAddItem)
+    setIsToggleButton(false)
   }
 
   function handleAddCategory() {
     setIsAddCategory(!isAddCategory)
+    setIsToggleButton(false)
   }
 
   function handleisToggleButton() {

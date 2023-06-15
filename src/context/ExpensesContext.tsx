@@ -4,6 +4,7 @@ import { ExpensesType } from "../@types";
 import { FetchExpenses } from "../lib/utils/fetch-expenses-rules";
 import { MonthContext } from "./MonthContext";
 import { ProfileContext } from "./ProfileContext";
+import { CategoriesContext } from "./CategoriesContext";
 
 type ExpensesContentTypes = {
   expenses: ExpensesType[]
@@ -15,6 +16,8 @@ type ExpensesContentTypes = {
     value: number,
     isEntry: boolean,
     isFixed: boolean,
+    expiresInMonth: number,
+    expiresInYear: number,
     category: string
   ) => void
 }
@@ -27,6 +30,7 @@ export const ExpensesContext = createContext({} as ExpensesContentTypes)
 
 export function ExpensesContextProvider({children}: ExpensesContentProviderTypes) {
   const { profile } = useContext(ProfileContext)
+  const {UpdateCategories} = useContext(CategoriesContext)
   const { UpdateMonth } = useContext(MonthContext)
   const apiUrl = Constants?.expoConfig?.extra?.apiUrl
 
@@ -41,6 +45,8 @@ export function ExpensesContextProvider({children}: ExpensesContentProviderTypes
     value: number,
     isEntry: boolean,
     isFixed: boolean,
+    expiresInMonth: number,
+    expiresInYear: number,
     category: string
   ) {
     if (!profile) return
@@ -49,6 +55,8 @@ export function ExpensesContextProvider({children}: ExpensesContentProviderTypes
       name,
       isFixed,
       isEntry,
+      expiresInMonth,
+      expiresInYear,
       value,
       category
     }
@@ -67,6 +75,7 @@ export function ExpensesContextProvider({children}: ExpensesContentProviderTypes
     
     setExpenses(expenses)
     setFixedExpenses(fixedExpenses)
+    UpdateCategories(profile.id)
 
     UpdateMonth()
 

@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { ExpensesContextProvider } from './src/context/ExpensesContext';
-import { ExpensesBoard } from './src/components/ExpensesBoard';
 import { ModalContextProvider } from './src/context/ModalContext';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { MonthContextProvider } from './src/context/MonthContext';

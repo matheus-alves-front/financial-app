@@ -8,6 +8,7 @@ import Constants from 'expo-constants';
 type CategoriesContextTypes = {
   categories: CategoryType[]
   IncludeCategory: (name: string) => void
+  UpdateCategories: (profileId: number) => void
 }
 
 export const CategoriesContext = createContext({} as CategoriesContextTypes)
@@ -25,7 +26,7 @@ export function CategoriesContextProvider({children}: CategoriesContextProviderT
   useEffect(() => {
     if (!profile) return
 
-    FetchCategories(profile.id).then(categories => setCategories(categories))
+    UpdateCategories(profile.id)
   }, [profile])
 
   async function IncludeCategory(name: string) {
@@ -49,10 +50,17 @@ export function CategoriesContextProvider({children}: CategoriesContextProviderT
     return categorySent
   }
 
+  async function UpdateCategories(profileId: number) {
+    const categoriesUpdate = await FetchCategories(profileId)
+
+    setCategories(categoriesUpdate)
+  }
+
   return (
     <CategoriesContext.Provider value={{
       categories,
-      IncludeCategory
+      IncludeCategory,
+      UpdateCategories
     }}>
       {children}
     </CategoriesContext.Provider>

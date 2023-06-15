@@ -5,12 +5,10 @@ import { ModalContext } from "../../context/ModalContext"
 
 const { colors } = themeLight
 
-export function AddItem() {
+export function AddItem({ hasCategory }: { hasCategory: boolean }) {
   const {
     handleAddItem,
-    isAddItem,
     handleAddCategory,
-    isAddCategory,
     handleisToggleButton,
     isToggleButton
   } = useContext(ModalContext)
@@ -27,12 +25,14 @@ export function AddItem() {
         styles.ModalButtons,
         isToggleButton ? styles.ModalButtonsOpened : {}
       ]}>
-        <TouchableOpacity 
-          style={styles.Button} 
-          onPress={handleAddItem}
-        >
-          <Text style={styles.ButtonText}>Nova Transação</Text>
-        </TouchableOpacity>
+        {hasCategory && 
+          <TouchableOpacity 
+            style={styles.Button} 
+            onPress={handleAddItem}
+          >
+            <Text style={styles.ButtonText}>Nova Transação</Text>
+          </TouchableOpacity>
+        }
         <TouchableOpacity 
           style={styles.Button} 
           onPress={handleAddCategory}

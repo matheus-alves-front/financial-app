@@ -25,7 +25,7 @@ export function ExpensesBoard() {
     'Categoria'
   ]
 
-  const [section, setSection] = useState('Variáveis')
+  const [section, setSection] = useState('Categoria')
 
   return (
     <View style={styles.listContainer}>
