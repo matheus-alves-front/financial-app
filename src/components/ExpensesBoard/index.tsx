@@ -5,6 +5,8 @@ import { ExpensesContext } from "../../context/ExpensesContext";
 import { ExpenseItem } from "../ExpenseItem";
 import { DropDown } from "../../lib/components/DropDown";
 import { themeLight } from "../../styles/colors";
+import { CategoriesContext } from "../../context/CategoriesContext";
+import { CategoryExpenseItem } from "../CategoryExpensesItem";
 
 
 export function ExpensesBoard() {
@@ -12,6 +14,10 @@ export function ExpensesBoard() {
     expenses,
     fixedExpenses
   } = useContext(ExpensesContext)
+
+  const {
+    categories
+  } = useContext(CategoriesContext)
 
   const sections = [
     'Variáveis',
@@ -62,7 +68,19 @@ export function ExpensesBoard() {
           }
         </>
       }
-      {section === 'Categoria' && <Text  style={styles.noExpensesMessage}>Categoria</Text>}
+      {section === 'Categoria' && 
+        <>
+          {categories.length !== 0 ? 
+            <FlatList 
+              data={categories}
+              style={styles.expensesList}
+              renderItem={({item}) => <CategoryExpenseItem category={item} />}
+            />
+          :
+            <Text style={styles.noExpensesMessage}>Você ainda não adicionou categorias</Text>
+          }
+        </>
+      }
       
     </View>
   )

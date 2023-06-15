@@ -1,14 +1,11 @@
-import { ReactNode, useContext, useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { TextInput, View, Text, Switch, TouchableOpacity, StyleSheet } from "react-native"
-import CurrencyInput from 'react-native-currency-input';
 
 import { ModalContext } from "../../context/ModalContext"
 
-import { ExpensesContext } from "../../context/ExpensesContext"
 import { ModalCustom } from "../../lib/components/ModalCustom"
 
 import { themeLight } from "../../styles/colors"
-import { ExpenseIcon } from "../../lib/Icons/ExpenseIcons";
 import { CategoriesContext } from "../../context/CategoriesContext";
 
 export function FormEntryAddCategory() {

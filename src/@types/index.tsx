@@ -20,7 +20,7 @@ export type MonthType = {
 export type CategoryType = {
   id: number
   name: number
-  expenses?: ExpensesType[]
+  expenses: ExpensesType[]
 }
 
 export type ProfileType = {
