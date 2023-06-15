@@ -10,7 +10,7 @@ import { ModalCustom } from "../../lib/components/ModalCustom"
 import { themeLight } from "../../styles/colors"
 import { ExpenseIcon } from "../../lib/Icons/ExpenseIcons";
 
-export function FormEntry() {
+export function FormEntryAddItem() {
   const {
     IncludeExpenses
   } = useContext(ExpensesContext)

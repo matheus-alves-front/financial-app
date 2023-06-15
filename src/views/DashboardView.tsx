@@ -3,6 +3,7 @@ import { ExpensesBoard } from "../components/ExpensesBoard";
 import { Header } from "../components/Header";
 import { useContext } from 'react'
 import { MonthContext } from "../context/MonthContext";
+import { ModalForm } from "../components/ModalForm";
 
 export function DashboardView() {
   const { month } = useContext(MonthContext)
@@ -30,6 +31,7 @@ export function DashboardView() {
         year={year} 
       />
       <ExpensesBoard />
+      <ModalForm />
     </>
   )
 }

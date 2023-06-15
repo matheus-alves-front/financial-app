@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
 import {themeLight} from '../../styles/colors'
-import { ModalForm } from "../ModalForm";
 
 const {colors} = themeLight
 
@@ -9,7 +8,6 @@ export function Header() {
     <View style={styles.header}>
       <View style={styles.headerContent}>
         <Text style={styles.title}>Finanças</Text>
-        <ModalForm /> 
       </View>
     </View>
   )

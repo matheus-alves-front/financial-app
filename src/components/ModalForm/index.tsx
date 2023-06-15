@@ -1,14 +1,12 @@
-import { useContext } from "react";
 import { AddItem } from "../AddItem";
-import { FormEntry } from "../FormEntry";
-import { ModalContext } from "../../context/ModalContext";
+import { FormEntryAddCategory } from "../FormEntry/FormEntryAddCategory";
+import { FormEntryAddItem } from "../FormEntry/FormEntryAddItem";
 
 export function ModalForm() {
-  const {isAddItem} = useContext(ModalContext)
-
   return (
     <>
-      <FormEntry /> 
+      <FormEntryAddItem /> 
+      <FormEntryAddCategory />
       <AddItem />
     </>
   )

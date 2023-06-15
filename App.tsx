@@ -6,21 +6,24 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { MonthContextProvider } from './src/context/MonthContext';
 import { ProfileContextProvider } from './src/context/ProfileContext';
 import { Main } from './src/views/Main';
+import { CategoriesContextProvider } from './src/context/CategoriesContext';
 
 export default function App() {
   return (
     <ProfileContextProvider>
-      <MonthContextProvider>
-        <ExpensesContextProvider>
-          <ModalContextProvider>
-            <SafeAreaProvider>
-              <View style={styles.container}>
-                <Main />
-              </View>
-            </SafeAreaProvider>
-          </ModalContextProvider>
-        </ExpensesContextProvider>
-      </MonthContextProvider>
+      <CategoriesContextProvider>
+        <MonthContextProvider>
+          <ExpensesContextProvider>
+            <ModalContextProvider>
+              <SafeAreaProvider>
+                <View style={styles.container}>
+                  <Main />
+                </View>
+              </SafeAreaProvider>
+            </ModalContextProvider>
+          </ExpensesContextProvider>
+        </MonthContextProvider>
+      </CategoriesContextProvider>
     </ProfileContextProvider>
   );
 }

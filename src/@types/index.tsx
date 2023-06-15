@@ -17,6 +17,12 @@ export type MonthType = {
   totalAmountLeft: number
 }
 
+export type CategoryType = {
+  id: number
+  name: number
+  expenses?: ExpensesType[]
+}
+
 export type ProfileType = {
   id: number
   name: string
