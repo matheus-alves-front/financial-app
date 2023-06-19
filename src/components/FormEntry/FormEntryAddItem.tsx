@@ -35,7 +35,7 @@ export function FormEntryAddItem() {
   const [category, setCategory] = useState("")
   const [value, setValue] = useState(0)
 
-  const [isCategorySelect, setIsCategorySelect] = useState(true)
+  const [isCategorySelect, setIsCategorySelect] = useState(false)
   
   function SubmitPayments() {
     IncludeExpenses(
@@ -55,7 +55,7 @@ export function FormEntryAddItem() {
   const [isInstallments, setIsInstallments] = useState(false)
 
   useEffect(() => {
-    if (!name || !value || !category) setIsSubmit(false)
+    if (!name || !value || !category || !category) setIsSubmit(false)
     else setIsSubmit(true)
   }, [
     name,
