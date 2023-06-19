@@ -14,11 +14,9 @@ export default function App() {
         <MonthContextProvider>
           <ExpensesContextProvider>
             <ModalContextProvider>
-              <SafeAreaProvider>
                 <View style={styles.container}>
                   <Main />
                 </View>
-              </SafeAreaProvider>
             </ModalContextProvider>
           </ExpensesContextProvider>
         </MonthContextProvider>

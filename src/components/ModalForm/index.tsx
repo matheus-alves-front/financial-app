@@ -9,11 +9,9 @@ export function ModalForm() {
 
   const [hasCategories, setHasCategories] = useState(false)
 
-
   useEffect(() => {
     setHasCategories(!!categories.length)
   }, [categories])
-
 
   return (
     <>

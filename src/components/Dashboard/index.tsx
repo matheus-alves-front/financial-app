@@ -26,6 +26,15 @@ export function Dashboard({
   return (
     <View style={styles.dashboardSection}>
       <ScrollView style={styles.dashboardContent} horizontal>
+        <View style={styles.dashboardItem}>
+          <View style={styles.titleSection}>
+            <Text style={[styles.dashBoardTitle, styles.entryColor]}>Total</Text>
+            <ExpenseIcon isEntry={true} />
+          </View>
+          <Text style={[styles.dashboardValue, styles.entryColor]}>R${totalAmountLeft}</Text>
+          {/* <Text style={styles.subText}>R$00,00 a mais do que o Mês Passado</Text> */}
+          <Text style={styles.subText}>Data: {month}/{year}</Text>
+        </View>
         <View style={[styles.dashboardItem, styles.expenseColor]}>
           <View style={styles.titleSection}>
             <Text style={styles.dashBoardTitle}>Saídas</Text>
@@ -43,15 +52,6 @@ export function Dashboard({
           <Text style={[styles.dashboardValue, styles.entryColor]}>R${totalEntryExpenses}</Text>
           <Text style={styles.subText}>Fixo: R${totalFixedEntryExpenses}</Text>
           {/* <Text style={styles.subText}>Variável: R${Number(totalEntryExpenses - totalFixedEntryExpenses)}</Text> */}
-        </View>
-        <View style={styles.dashboardItem}>
-          <View style={styles.titleSection}>
-            <Text style={[styles.dashBoardTitle, styles.entryColor]}>Total</Text>
-            <ExpenseIcon isEntry={true} />
-          </View>
-          <Text style={[styles.dashboardValue, styles.entryColor]}>R${totalAmountLeft}</Text>
-          {/* <Text style={styles.subText}>R$00,00 a mais do que o Mês Passado</Text> */}
-          <Text style={styles.subText}>Data: {month}/{year}</Text>
         </View>
       </ScrollView>
     </View>

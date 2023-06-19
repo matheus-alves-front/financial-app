@@ -19,7 +19,7 @@ export type MonthType = {
 
 export type CategoryType = {
   id: number
-  name: number
+  name: string
   expenses: ExpensesType[]
 }
 

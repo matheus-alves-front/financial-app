@@ -7,7 +7,7 @@ export function Header() {
   return (
     <View style={styles.header}>
       <View style={styles.headerContent}>
-        <Text style={styles.title}>Finanças</Text>
+        <Text style={styles.title}>Financial App</Text>
       </View>
     </View>
   )
@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
     color: colors.orange,
     fontWeight: 'bold',
     fontSize: 20,
-    textTransform: 'uppercase'
   },
   headerContent: {
     padding: 20,

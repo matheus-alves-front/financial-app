@@ -1,5 +1,5 @@
-import { ReactNode, useContext, useEffect, useState } from "react"
-import { TextInput, View, Text, Switch, TouchableOpacity, StyleSheet } from "react-native"
+import { useContext, useEffect, useState } from "react"
+import { TextInput, View, Text, Switch, TouchableOpacity, StyleSheet, FlatList } from "react-native"
 import CurrencyInput from 'react-native-currency-input';
 
 import { ModalContext } from "../../context/ModalContext"
@@ -10,25 +10,34 @@ import { ModalCustom } from "../../lib/components/ModalCustom"
 import { themeLight } from "../../styles/colors"
 import { ExpenseIcon } from "../../lib/Icons/ExpenseIcons";
 
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { calcLastInstallmentDate } from "../../lib/utils/calcLastInstallmentDate";
+import { CategoriesContext } from "../../context/CategoriesContext";
+
+
 export function FormEntryAddItem() {
   const {
     IncludeExpenses
   } = useContext(ExpensesContext)
+
+  const {
+    categories
+  } = useContext(CategoriesContext)
 
   const {handleAddItem, isAddItem} = useContext(ModalContext)
 
   const [name, setName] = useState('')
   const [isEntry, setIsEntry] = useState(false)
   const [isFixed, setIsFixed] = useState(false)
-  const [expiresInMonthString, setExpiresInMonth] = useState('3000')
-  const [expiresInYearString, setExpiresInYear] = useState('3000')
+  const [numberOfInstallments, setNumberOfInstallments] = useState('1')
+  const [expiresInMonth, setExpiresInMonth] = useState(3000)
+  const [expiresInYear, setExpiresInYear] = useState(3000)
   const [category, setCategory] = useState("")
   const [value, setValue] = useState(0)
+
+  const [isCategorySelect, setIsCategorySelect] = useState(true)
   
   function SubmitPayments() {
-    const expiresInMonth = Number(expiresInMonthString)
-    const expiresInYear = Number(expiresInYearString)
-
     IncludeExpenses(
       name, 
       value, 
@@ -55,152 +64,167 @@ export function FormEntryAddItem() {
   ])
 
   useEffect(() => {
-    if (isEntry) {
-      setIsInstallments(false)
-    }
-    if (isInstallments) {
-      setExpiresInMonth('0')
-      setExpiresInYear('0')
-    } else {
-      setExpiresInMonth('3000')
-      setExpiresInYear('3000')
-    }
-  }, [isEntry, isInstallments])
+    setNumberOfInstallments('1')
+  }, [isEntry, isInstallments, isFixed])
+
+  useEffect(() => {
+    const numberOfInstallmentsNumber = Number(numberOfInstallments)
+    const {month, year} = calcLastInstallmentDate(numberOfInstallmentsNumber)
+
+    setExpiresInMonth(month)
+    setExpiresInYear(year)
+  }, [numberOfInstallments])
 
   return (
     <ModalCustom isVisible={isAddItem}>
       <View style={styles.formEntry}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Cadastrar transação</Text>
-          <TouchableOpacity 
-            style={styles.modalCloseButton}
-            onPress={() => handleAddItem()}
-          
-          >
-            <Text style={styles.modalCloseText}>X</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.formContent}>
-          <TextInput 
-            style={styles.input}
-            placeholder="Nome"
-            aria-label="name"
-            onChangeText={setName}
-            value={name}
-          />
-          <CurrencyInput 
-              style={styles.input}
-              value={value}
-              onChangeValue={(text: number) => setValue(text || 0)}
-              prefix="R$"
-          />
-          <View style={styles.isEntrySection}>
+        <KeyboardAwareScrollView>
+          <View style={styles.header}>
+            <Text style={styles.headerText}>Cadastrar transação</Text>
             <TouchableOpacity 
-              style={[
-                styles.buttonIsEntry,
-                {backgroundColor: isEntry ? colors.lightGreen : 'transparent'}
-              ]}
-              onPress={() => setIsEntry(true)}
+              style={styles.modalCloseButton}
+              onPress={() => handleAddItem()}
             >
-              <Text style={styles.buttonText}>Entrada</Text>
-              <ExpenseIcon isEntry={true} />
-            </TouchableOpacity>
-            <TouchableOpacity 
-              style={[
-                styles.buttonIsEntry,
-                {backgroundColor: !isEntry ? colors.lightRed : 'transparent'}
-              ]}
-              onPress={() => setIsEntry(false)}
-            >
-              <ExpenseIcon isEntry={false} />
-              <Text style={styles.buttonText}>Saída</Text>
+              <Text style={styles.modalCloseText}>X</Text>
             </TouchableOpacity>
           </View>
-          <View style={styles.isFixedSection}>
-            <View style={styles.isFixed}>
-              <Text>{isFixed ? 'Fixo' : 'Variável'}</Text>
-              <Switch 
-                aria-label="type"
-                onValueChange={() => setIsFixed(!isFixed)}
-                value={isFixed}
-              />
+          <View style={styles.formContent}>
+            <TextInput 
+              style={styles.input}
+              placeholder="Nome"
+              aria-label="name"
+              onChangeText={setName}
+              value={name}
+            />
+            <CurrencyInput 
+                style={styles.input}
+                value={value}
+                onChangeValue={(text: number) => setValue(text || 0)}
+                prefix="R$"
+            />
+            <View style={styles.isEntrySection}>
+              <TouchableOpacity 
+                style={[
+                  styles.buttonIsEntry,
+                  {backgroundColor: isEntry ? colors.lightGreen : 'transparent'}
+                ]}
+                onPress={() => setIsEntry(true)}
+              >
+                <Text style={styles.buttonText}>Entrada</Text>
+                <ExpenseIcon isEntry={true} />
+              </TouchableOpacity>
+              <TouchableOpacity 
+                style={[
+                  styles.buttonIsEntry,
+                  {backgroundColor: !isEntry ? colors.lightRed : 'transparent'}
+                ]}
+                onPress={() => setIsEntry(false)}
+              >
+                <ExpenseIcon isEntry={false} />
+                <Text style={styles.buttonText}>Saída</Text>
+              </TouchableOpacity>
             </View>
-            {!isEntry && isFixed &&
-              <>
-                <View style={styles.isInstallments}>
-                  <Text>{isInstallments ? 'Parcelado' : 'Não Parcelado'}</Text>
-                  <Switch 
-                    aria-label="type"
-                    onValueChange={() => setIsInstallments(!isInstallments)}
-                    value={isInstallments}
-                  />
-                </View>
-                {isInstallments && 
-                  <View style={styles.installmentsSection}>
-                    <TextInput 
-                      keyboardType="numeric"
-                      aria-label="expiresInMonth"
-                      style={[
-                        styles.input,
-                        styles.installmentsInput
-                      ]}
-                      maxLength={2}
-                      onChangeText={setExpiresInMonth}
-                      value={expiresInMonthString}
-                    />
-                    <Text style={{fontSize: 20}}>/</Text>
-                    <TextInput 
-                      keyboardType="numeric"
-                      aria-label="expiresInYear"
-                      style={[
-                        styles.input,
-                        styles.installmentsInput
-                      ]}
-                      maxLength={4}
-                      onChangeText={setExpiresInYear}
-                      value={expiresInYearString}
+            <View style={styles.isFixedSection}>
+              <View style={styles.isFixed}>
+                <Text>{isFixed ? 'Fixo' : 'Variável'}</Text>
+                <Switch 
+                  aria-label="type"
+                  onValueChange={() => setIsFixed(!isFixed)}
+                  value={isFixed}
+                />
+              </View>
+              {!isEntry && isFixed &&
+                <>
+                  <View style={styles.isInstallments}>
+                    <Text>{isInstallments ? 'Parcelado em:' : 'Não Parcelado'}</Text>
+                    <Switch 
+                      aria-label="type"
+                      onValueChange={() => setIsInstallments(!isInstallments)}
+                      value={isInstallments}
                     />
                   </View>
-                }
-              </>
-            }
+                  {isInstallments && 
+                    <View style={styles.installmentsSection}>
+                      <TextInput 
+                        keyboardType="numeric"
+                        aria-label="expiresInMonth"
+                        style={[
+                          styles.input,
+                          styles.installmentsInput
+                        ]}
+                        maxLength={2}
+                        onChangeText={setNumberOfInstallments}
+                        value={numberOfInstallments}
+                      />
+                      <Text>Vezes</Text>
+                    </View>
+                  }
+                </>
+              }
+            </View>
+            <View style={SelectBoxStyles.categorySelect}>
+              <Text 
+                style={styles.input}
+                onPress={() => setIsCategorySelect(true)}
+              >
+                {category ? category : 'Selecione uma Categoria'}
+              </Text>
+              {isCategorySelect && 
+                <View style={SelectBoxStyles.categorySelectContent}>
+                  {categories.map((categoryItem) => (
+                    <Text 
+                      style={SelectBoxStyles.categoryOption}
+                      onPress={() => {
+                        setCategory(categoryItem.name)
+                        setIsCategorySelect(false)
+                      }} 
+                      key={categoryItem.id}>{categoryItem.name}
+                    </Text>
+                    ))}
+                </View>
+              }
+            </View>
+            <TouchableOpacity 
+              onPress={SubmitPayments}
+              style={styles.submitButton}
+              disabled={!isSubmit}
+            >
+              <Text style={styles.submitButtonText}>Adicionar</Text>
+            </TouchableOpacity>
           </View>
-          <TextInput 
-            style={styles.input}
-            placeholder="Categoria"
-            aria-label="category"
-            onChangeText={setCategory}
-            value={category}
-          />
-          <TouchableOpacity 
-            onPress={SubmitPayments}
-            style={styles.submitButton}
-            disabled={!isSubmit}
-          >
-            <Text style={styles.submitButtonText}>Adicionar</Text>
-          </TouchableOpacity>
-        </View>
+        </KeyboardAwareScrollView>
       </View>
     </ModalCustom>
   )
 }
 
-export function SelectBox({
-  children
-}: {
-  children: ReactNode
-}) {
-  return (
-    <View style={styles.categorySelect}>
-      <Text style={styles.categoryTexts}>Categorias:</Text>
-      <Text style={styles.categoryTexts}>Você ainda não tem categorias:</Text>
-
-      {children}
-    </View>
-  )
-}
-
 const {colors} = themeLight
+
+const SelectBoxStyles = StyleSheet.create({
+  categorySelect: {
+    position: 'relative'
+  },
+  categorySelectContent: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    backgroundColor: colors.white,
+    borderWidth: 1,
+    borderColor: colors.gray,
+    borderRadius: 5,
+    padding: 10,
+    gap: 10
+  },
+  categoryOption: {
+    width: '100%',
+    textAlign: 'center',
+    padding: 5,
+    borderRadius: 5,
+
+    backgroundColor: colors.orange,
+    color: colors.white
+  }
+})
 
 const styles = StyleSheet.create({
   header: {
@@ -210,7 +234,6 @@ const styles = StyleSheet.create({
     paddingBottom: 20
   },
   formEntry: {
-    height: '75%',
     marginTop: 'auto',
     backgroundColor: colors.white,
     padding: 20,
@@ -290,18 +313,6 @@ const styles = StyleSheet.create({
   installmentsInput: {
     textAlign: 'center',
     width: 70
-  },
-  categorySelect: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    margin: 'auto',
-    borderRadius: 15,
-    backgroundColor: colors.lightBlue,
-    padding: 15,
-    elevation: 10
   },
   categoryTexts: {
     color: colors.white,

@@ -8,6 +8,8 @@ import { ModalCustom } from "../../lib/components/ModalCustom"
 import { themeLight } from "../../styles/colors"
 import { CategoriesContext } from "../../context/CategoriesContext";
 
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 export function FormEntryAddCategory() {
   const {
     IncludeCategory
@@ -32,31 +34,34 @@ export function FormEntryAddCategory() {
   return (
     <ModalCustom isVisible={isAddCategory}>
       <View style={styles.formEntry}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Cadastrar categoria</Text>
-          <TouchableOpacity 
-            style={styles.modalCloseButton}
-            onPress={() => handleAddCategory()}
-          >
-            <Text style={styles.modalCloseText}>X</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.formContent}>
-          <TextInput 
-            style={styles.input}
-            placeholder="Nome da Categoria"
-            aria-label="name"
-            onChangeText={setName}
-            value={name}
-          />
-          <TouchableOpacity 
-            onPress={SubmitPayments}
-            style={styles.submitButton}
-            disabled={!isSubmit}
-          >
-            <Text style={styles.submitButtonText}>Adicionar</Text>
-          </TouchableOpacity>
-        </View>
+        
+          <View style={styles.header}>
+            <Text style={styles.headerText}>Cadastrar categoria</Text>
+            <TouchableOpacity 
+              style={styles.modalCloseButton}
+              onPress={() => handleAddCategory()}
+            >
+              <Text style={styles.modalCloseText}>X</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.formContent}>
+            <KeyboardAwareScrollView>
+              <TextInput 
+                style={styles.input}
+                placeholder="Nome da Categoria"
+                aria-label="name"
+                onChangeText={setName}
+                value={name}
+              />
+            </KeyboardAwareScrollView>
+            <TouchableOpacity 
+              onPress={SubmitPayments}
+              style={styles.submitButton}
+              disabled={!isSubmit}
+            >
+              <Text style={styles.submitButtonText}>Adicionar</Text>
+            </TouchableOpacity>
+          </View>
       </View>
     </ModalCustom>
   )
