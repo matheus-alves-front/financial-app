@@ -20,6 +20,8 @@ type ExpensesContentTypes = {
     expiresInYear: number,
     category: string
   ) => void
+  ChangeExpenseValue: (expenseId: number, value: number) => void
+  ExcludeExpense: (expenseId: number) => void
 }
 
 type ExpensesContentProviderTypes = {
@@ -70,7 +72,6 @@ export function ExpensesContextProvider({children}: ExpensesContentProviderTypes
     })
     const expenseSent = await postExpense.json()
 
-    
     const {expenses, fixedExpenses} = await FetchExpenses(profile.id)
     
     setExpenses(expenses)
@@ -80,6 +81,55 @@ export function ExpensesContextProvider({children}: ExpensesContentProviderTypes
     UpdateMonth()
 
     return expenseSent
+  }
+
+  async function ChangeExpenseValue(expenseId: number, value: number) {
+    if (!profile) return
+
+    const putExpense = await fetch(`${apiUrl}/profile/${profile.id}/expenses/${expenseId}`, {
+      method: 'PUT',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        value
+      })
+    })
+    const expenseSent = await putExpense.json()
+
+    console.log(expenseSent)
+
+    if (expenseSent) {
+      const {expenses, fixedExpenses} = await FetchExpenses(profile.id)
+
+      setExpenses(expenses)
+      setFixedExpenses(fixedExpenses)
+      UpdateCategories(profile.id)
+      UpdateMonth()
+
+      return expenseSent
+    }
+
+    return null
+  }
+
+  async function ExcludeExpense(expenseId: number) {
+    if (!profile) return
+
+    const putExpense = await fetch(`${apiUrl}/profile/${profile.id}/expenses/${expenseId}`, {
+      method: 'DELETE'
+    })
+    const expenseSent = await putExpense.json()
+
+    if (!expenseSent) return
+
+    const {expenses, fixedExpenses} = await FetchExpenses(profile.id)
+
+    setExpenses(expenses)
+    setFixedExpenses(fixedExpenses)
+    UpdateCategories(profile.id)
+
+    UpdateMonth()
   }
 
   useEffect(() => {
@@ -137,6 +187,8 @@ export function ExpensesContextProvider({children}: ExpensesContentProviderTypes
       expenses,
       fixedExpenses,
       IncludeExpenses,
+      ChangeExpenseValue,
+      ExcludeExpense,
       totalPrice,
       total
     }}>

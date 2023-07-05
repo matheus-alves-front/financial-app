@@ -1,4 +1,5 @@
 export type ExpensesType = {
+  id: number
   name: string
   value: number
   isEntry: boolean

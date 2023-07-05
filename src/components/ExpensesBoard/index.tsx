@@ -12,7 +12,9 @@ import { CategoryExpenseItem } from "../CategoryExpensesItem";
 export function ExpensesBoard() {
   const {
     expenses,
-    fixedExpenses
+    fixedExpenses,
+    ChangeExpenseValue,
+    ExcludeExpense
   } = useContext(ExpensesContext)
 
   const {
@@ -51,7 +53,7 @@ export function ExpensesBoard() {
           <FlatList 
             data={expenses}
             style={styles.expensesList}
-            renderItem={({item}) => <ExpenseItem expense={item} />}
+            renderItem={({item}) => <ExpenseItem expense={item} onExclude={ExcludeExpense(item.id)} />}
           />
         </>
       }
@@ -61,7 +63,7 @@ export function ExpensesBoard() {
             <FlatList 
             data={fixedExpenses}
             style={styles.expensesList}
-            renderItem={({item}) => <ExpenseItem expense={item} />}
+            renderItem={({item}) => <ExpenseItem expense={item} onExclude={ExcludeExpense(item.id)} />}
             />
             :
             <Text  style={styles.noExpensesMessage}>Você ainda não adicionou gastos fixos</Text>
