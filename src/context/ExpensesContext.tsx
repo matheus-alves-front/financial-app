@@ -97,8 +97,6 @@ export function ExpensesContextProvider({children}: ExpensesContentProviderTypes
     })
     const expenseSent = await putExpense.json()
 
-    console.log(expenseSent)
-
     if (expenseSent) {
       const {expenses, fixedExpenses} = await FetchExpenses(profile.id)
 
@@ -116,12 +114,9 @@ export function ExpensesContextProvider({children}: ExpensesContentProviderTypes
   async function ExcludeExpense(expenseId: number) {
     if (!profile) return
 
-    const putExpense = await fetch(`${apiUrl}/profile/${profile.id}/expenses/${expenseId}`, {
+    await fetch(`${apiUrl}/profile/${profile.id}/expenses/${expenseId}`, {
       method: 'DELETE'
     })
-    const expenseSent = await putExpense.json()
-
-    if (!expenseSent) return
 
     const {expenses, fixedExpenses} = await FetchExpenses(profile.id)
 

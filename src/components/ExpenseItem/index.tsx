@@ -4,21 +4,24 @@ import { ExpensesType } from "../../@types";
 
 import { ExpenseIcon } from "../../lib/Icons/ExpenseIcons";
 import { ThrashIcon } from "../../lib/Icons/ThrashIcon";
+import { ExpensesContext } from "../../context/ExpensesContext";
+import { useContext } from "react";
 
 type ExpenseItemProps = {
   expense: ExpensesType
-  onExclude: (expenseId: number) => void
 }
 
 export function ExpenseItem({
-  expense,
-  onExclude
+  expense
 }: ExpenseItemProps) {
+
+  const { ExcludeExpense } = useContext(ExpensesContext)
+
   return (
     <View style={styles.expenseItem}>
       <View style={styles.expenseValueSection}>
         <Text style={styles.expenseName}>{expense.name}</Text>
-        <TouchableOpacity style={styles.expenseAction} onPress={() => onExclude(expense.id)}>
+        <TouchableOpacity style={styles.expenseAction} onPress={() => ExcludeExpense(expense.id)}>
           <ThrashIcon
             color={colors.red}
             colorFill={colors.red}

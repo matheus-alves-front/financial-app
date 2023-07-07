@@ -53,7 +53,7 @@ export function ExpensesBoard() {
           <FlatList 
             data={expenses}
             style={styles.expensesList}
-            renderItem={({item}) => <ExpenseItem expense={item} onExclude={ExcludeExpense(item.id)} />}
+            renderItem={({item}) => <ExpenseItem expense={item} />}
           />
         </>
       }
@@ -63,7 +63,7 @@ export function ExpensesBoard() {
             <FlatList 
             data={fixedExpenses}
             style={styles.expensesList}
-            renderItem={({item}) => <ExpenseItem expense={item} onExclude={ExcludeExpense(item.id)} />}
+            renderItem={({item}) => <ExpenseItem expense={item} />}
             />
             :
             <Text  style={styles.noExpensesMessage}>Você ainda não adicionou gastos fixos</Text>
