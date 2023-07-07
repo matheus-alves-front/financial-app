@@ -1,6 +1,7 @@
 import { Text, View, StyleSheet, ScrollView } from 'react-native'
 import { themeLight } from '../../styles/colors'
 import { ExpenseIcon } from '../../lib/Icons/ExpenseIcons'
+import { useEffect, useState } from 'react'
 
 const { colors } = themeLight
 
@@ -23,22 +24,41 @@ export function Dashboard({
   totalFixedExpenses,
   year
 }: DashboardProps) {
+  const [isTotalPositive, setIsTotalPositive] = useState(true)
+
+  function isPositive(value: number) {
+    if (value > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  useEffect(() => {
+    const totalIsPositive = isPositive(totalAmountLeft)
+    
+    setIsTotalPositive(totalIsPositive)
+  }, [totalAmountLeft])
+
   return (
     <View style={styles.dashboardSection}>
       <ScrollView style={styles.dashboardContent} horizontal>
         <View style={styles.dashboardItem}>
           <View style={styles.titleSection}>
             <Text style={[styles.dashBoardTitle, styles.entryColor]}>Total</Text>
-            <ExpenseIcon isEntry={true} />
+            <ExpenseIcon width={30} height={30} isEntry={isTotalPositive} />
           </View>
-          <Text style={[styles.dashboardValue, styles.entryColor]}>R${totalAmountLeft}</Text>
+          <Text style={[
+            isTotalPositive ? styles.entryColor : styles.expenseColor,
+            styles.dashboardValue
+          ]}>R${totalAmountLeft}</Text>
           {/* <Text style={styles.subText}>R$00,00 a mais do que o Mês Passado</Text> */}
           <Text style={styles.subText}>Data: {month}/{year}</Text>
         </View>
         <View style={[styles.dashboardItem, styles.expenseColor]}>
           <View style={styles.titleSection}>
             <Text style={styles.dashBoardTitle}>Saídas</Text>
-            <ExpenseIcon isEntry={false} />
+            <ExpenseIcon width={30} height={30} isEntry={false} />
           </View>
           <Text style={[styles.dashboardValue, styles.expenseColor]}>R${totalExpenses}</Text>
           <Text style={styles.subText}>Fixo: R${totalFixedExpenses}</Text>
@@ -47,7 +67,7 @@ export function Dashboard({
         <View style={[styles.dashboardItem, styles.entryColor]}>
           <View style={styles.titleSection}>
             <Text style={styles.dashBoardTitle}>Entradas</Text>
-            <ExpenseIcon isEntry={true} />
+            <ExpenseIcon width={30} height={30} isEntry={true} />
           </View>
           <Text style={[styles.dashboardValue, styles.entryColor]}>R${totalEntryExpenses}</Text>
           <Text style={styles.subText}>Fixo: R${totalFixedEntryExpenses}</Text>

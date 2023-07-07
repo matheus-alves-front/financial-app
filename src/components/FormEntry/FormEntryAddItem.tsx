@@ -131,6 +131,11 @@ export function FormEntryAddItem() {
                   aria-label="type"
                   onValueChange={() => setIsFixed(!isFixed)}
                   value={isFixed}
+                  trackColor={{
+                    false: colors.lightGreen,
+                    true: colors.orange
+                  }}
+                  thumbColor={colors.gray}
                 />
               </View>
               {!isEntry && isFixed &&
