@@ -6,22 +6,25 @@ import { MonthContextProvider } from './src/context/MonthContext';
 import { ProfileContextProvider } from './src/context/ProfileContext';
 import { Main } from './src/views/Main';
 import { CategoriesContextProvider } from './src/context/CategoriesContext';
+import { LoadingContextProvider } from './src/context/LoadingContext';
 
 export default function App() {
   return (
-    <ProfileContextProvider>
-      <CategoriesContextProvider>
-        <MonthContextProvider>
-          <ExpensesContextProvider>
-            <ModalContextProvider>
-                <View style={styles.container}>
-                  <Main />
-                </View>
-            </ModalContextProvider>
-          </ExpensesContextProvider>
-        </MonthContextProvider>
-      </CategoriesContextProvider>
-    </ProfileContextProvider>
+    <LoadingContextProvider>
+      <ProfileContextProvider>
+        <CategoriesContextProvider>
+          <MonthContextProvider>
+            <ExpensesContextProvider>
+              <ModalContextProvider>
+                  <View style={styles.container}>
+                    <Main />
+                  </View>
+              </ModalContextProvider>
+            </ExpensesContextProvider>
+          </MonthContextProvider>
+        </CategoriesContextProvider>
+      </ProfileContextProvider>
+    </LoadingContextProvider>
   );
 }
 

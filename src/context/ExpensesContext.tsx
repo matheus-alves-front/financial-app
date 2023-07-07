@@ -5,13 +5,14 @@ import { FetchExpenses } from "../lib/utils/fetch-expenses-rules";
 import { MonthContext } from "./MonthContext";
 import { ProfileContext } from "./ProfileContext";
 import { CategoriesContext } from "./CategoriesContext";
+import { LoadingContext } from "./LoadingContext";
 
 type ExpensesContentTypes = {
   expenses: ExpensesType[]
   fixedExpenses: ExpensesType[]
   total: number
   totalPrice: string
-  IncludeExpenses: (
+  CreateExpense: (
     name: string,
     value: number,
     isEntry: boolean,
@@ -21,6 +22,7 @@ type ExpensesContentTypes = {
     category: string
   ) => void
   ChangeExpenseValue: (expenseId: number, value: number) => void
+  ChangeExpenseName: (expenseId: number, name: string) => void
   ExcludeExpense: (expenseId: number) => void
 }
 
@@ -32,7 +34,8 @@ export const ExpensesContext = createContext({} as ExpensesContentTypes)
 
 export function ExpensesContextProvider({children}: ExpensesContentProviderTypes) {
   const { profile } = useContext(ProfileContext)
-  const {UpdateCategories} = useContext(CategoriesContext)
+  const { handleLoading } = useContext(LoadingContext)
+  const { UpdateCategories} = useContext(CategoriesContext)
   const { UpdateMonth } = useContext(MonthContext)
   const apiUrl = Constants?.expoConfig?.extra?.apiUrl
 
@@ -42,7 +45,7 @@ export function ExpensesContextProvider({children}: ExpensesContentProviderTypes
   const [total, setTotal] = useState(0)
   const [totalPrice, setTotalPrice] = useState('R$00.00')
 
-  async function IncludeExpenses(
+  async function CreateExpense(
     name: string,
     value: number,
     isEntry: boolean,
@@ -63,13 +66,19 @@ export function ExpensesContextProvider({children}: ExpensesContentProviderTypes
       category
     }
 
-    const postExpense = await fetch(`${apiUrl}/profile/${profile.id}/expenses`, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    })
+    let postExpense = null
+
+    while(postExpense === null) {
+      handleLoading(true, 'Adicionando Item')
+      postExpense = await fetch(`${apiUrl}/profile/${profile.id}/expenses`, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+    }
+
     const expenseSent = await postExpense.json()
 
     const {expenses, fixedExpenses} = await FetchExpenses(profile.id)
@@ -80,43 +89,79 @@ export function ExpensesContextProvider({children}: ExpensesContentProviderTypes
 
     UpdateMonth()
 
+    handleLoading(false, '')
+
     return expenseSent
   }
 
   async function ChangeExpenseValue(expenseId: number, value: number) {
     if (!profile) return
 
-    const putExpense = await fetch(`${apiUrl}/profile/${profile.id}/expenses/${expenseId}`, {
-      method: 'PUT',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        value
+    let putExpense = null
+
+    while(putExpense === null) {
+      handleLoading(true, 'Alterando Valor do Item')
+      putExpense = await fetch(`${apiUrl}/profile/${profile.id}/expenses/${expenseId}`, {
+        method: 'PUT',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          value
+        })
       })
-    })
-    const expenseSent = await putExpense.json()
-
-    if (expenseSent) {
-      const {expenses, fixedExpenses} = await FetchExpenses(profile.id)
-
-      setExpenses(expenses)
-      setFixedExpenses(fixedExpenses)
-      UpdateCategories(profile.id)
-      UpdateMonth()
-
-      return expenseSent
     }
 
-    return null
+    const {expenses, fixedExpenses} = await FetchExpenses(profile.id)
+
+    setExpenses(expenses)
+    setFixedExpenses(fixedExpenses)
+    UpdateCategories(profile.id)
+    UpdateMonth()
+
+    handleLoading(false, '')
+  }
+
+  async function ChangeExpenseName(expenseId: number, name: string) {
+    if (!profile) return
+
+    let putExpense = null
+
+    while(putExpense === null) {
+      handleLoading(true, 'Alterando Nome do Item')
+      putExpense = await fetch(`${apiUrl}/profile/${profile.id}/expenses/${expenseId}`, {
+        method: 'PUT',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name
+        })
+      })
+    }
+
+    const {expenses, fixedExpenses} = await FetchExpenses(profile.id)
+
+    setExpenses(expenses)
+    setFixedExpenses(fixedExpenses)
+    UpdateCategories(profile.id)
+    UpdateMonth()
+
+    handleLoading(false, '')
   }
 
   async function ExcludeExpense(expenseId: number) {
     if (!profile) return
 
-    await fetch(`${apiUrl}/profile/${profile.id}/expenses/${expenseId}`, {
-      method: 'DELETE'
-    })
+    let postDeleteExpense = null
+
+    while(postDeleteExpense === null) {
+      handleLoading(true, 'Deletando Item')
+
+      postDeleteExpense = await fetch(`${apiUrl}/profile/${profile.id}/expenses/${expenseId}`, {
+        method: 'DELETE'
+      }) 
+    }
 
     const {expenses, fixedExpenses} = await FetchExpenses(profile.id)
 
@@ -125,6 +170,8 @@ export function ExpensesContextProvider({children}: ExpensesContentProviderTypes
     UpdateCategories(profile.id)
 
     UpdateMonth()
+
+    handleLoading(false, '')
   }
 
   useEffect(() => {
@@ -181,8 +228,9 @@ export function ExpensesContextProvider({children}: ExpensesContentProviderTypes
     <ExpensesContext.Provider value={{
       expenses,
       fixedExpenses,
-      IncludeExpenses,
+      CreateExpense,
       ChangeExpenseValue,
+      ChangeExpenseName,
       ExcludeExpense,
       totalPrice,
       total

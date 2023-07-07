@@ -3,6 +3,7 @@ import { CategoryType } from "../@types";
 import { ProfileContext } from "./ProfileContext";
 import { FetchCategories } from "../lib/utils/fetch-categories";
 import Constants from 'expo-constants';
+import { LoadingContext } from "./LoadingContext";
 
 
 type CategoriesContextTypes = {
@@ -20,6 +21,7 @@ type CategoriesContextProviderTypes = {
 export function CategoriesContextProvider({children}: CategoriesContextProviderTypes) {
   const apiUrl = Constants?.expoConfig?.extra?.apiUrl
   const { profile } = useContext(ProfileContext)
+  const { handleLoading } = useContext(LoadingContext)
 
   const [categories, setCategories] = useState<CategoryType[]>([])
 
@@ -32,20 +34,27 @@ export function CategoriesContextProvider({children}: CategoriesContextProviderT
   async function IncludeCategory(name: string) {
     if (!profile) return
 
-    const postCategory = await fetch(`${apiUrl}/profile/${profile.id}/category`, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        name
+    let postCategory = null
+    while (postCategory === null) {
+      handleLoading(true, 'Adicionando Categoria')
+      
+      postCategory = await fetch(`${apiUrl}/profile/${profile.id}/category`, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name
+        })
       })
-    })
+    }
+
     const categorySent = await postCategory.json()
 
     const categoriesUpdate = await FetchCategories(profile.id)
 
     setCategories(categoriesUpdate)
+    handleLoading(false, '')
 
     return categorySent
   }

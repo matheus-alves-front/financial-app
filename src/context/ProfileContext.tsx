@@ -1,7 +1,8 @@
-import { ReactNode, createContext, useEffect, useState } from "react";
+import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 import { MonthType, ProfileType } from "../@types";
 import Constants from 'expo-constants';
 import { Login } from "../views/Login";
+import { LoadingContext } from "./LoadingContext";
 
 type ProfileContextProps = {
   profile?: ProfileType,
@@ -28,6 +29,8 @@ export function ProfileContextProvider({
 }: ProfileContextProviderProps) {
   const apiUrl = Constants?.expoConfig?.extra?.apiUrl
 
+  const { handleLoading } = useContext(LoadingContext)
+
   const [profile, setProfile] = useState<ProfileType>()
   const [errorLoginMessage, setErrorLoginMessage] = useState("")
   const [errorRegisterMessage, setErrorRegisterMessage] = useState("")
@@ -38,16 +41,24 @@ export function ProfileContextProvider({
       password
     }
 
-    const postProfile = await fetch(`${apiUrl}/profile`, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    })
+    let postProfile = null
+
+    while(postProfile === null) {
+      handleLoading(true, 'Fazendo login')
+      postProfile = await fetch(`${apiUrl}/profile`, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+    }
     const profileSent = await postProfile.json()
 
-    if (profileSent.id) setProfile(profileSent)
+    if (profileSent.id) {
+      handleLoading(false, '')
+      setProfile(profileSent)
+    }
     setErrorRegisterMessage('Usuário Já Existe')
   }
 
@@ -59,16 +70,25 @@ export function ProfileContextProvider({
       password
     }
 
-    const postLogin = await fetch(`${apiUrl}/profile/login/`, {
-      method: 'POST',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(data)
-    })
+    let postLogin = null
+    
+    while (postLogin === null) {
+      handleLoading(true, 'Fazendo login')
+      postLogin = await fetch(`${apiUrl}/profile/login/`, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      })
+    }
     const loginResponse = await postLogin.json()
 
-    if (loginResponse.id) setProfile(loginResponse) 
+    if (loginResponse.id) {
+      handleLoading(false, '')
+      setProfile(loginResponse)
+    }
+    
     setErrorLoginMessage(loginResponse.message)
   }
 

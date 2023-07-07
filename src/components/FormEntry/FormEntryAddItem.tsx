@@ -17,7 +17,7 @@ import { CategoriesContext } from "../../context/CategoriesContext";
 
 export function FormEntryAddItem() {
   const {
-    IncludeExpenses
+    CreateExpense
   } = useContext(ExpensesContext)
 
   const {
@@ -38,7 +38,7 @@ export function FormEntryAddItem() {
   const [isCategorySelect, setIsCategorySelect] = useState(false)
   
   function SubmitPayments() {
-    IncludeExpenses(
+    CreateExpense(
       name, 
       value, 
       isEntry, 
