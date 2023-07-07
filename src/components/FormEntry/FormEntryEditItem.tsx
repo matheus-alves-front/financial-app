@@ -6,22 +6,47 @@ import { ModalContext } from "../../context/ModalContext"
 import { ModalCustom } from "../../lib/components/ModalCustom"
 
 import { themeLight } from "../../styles/colors"
-import { CategoriesContext } from "../../context/CategoriesContext";
 
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { ExpensesContext } from "../../context/ExpensesContext"
+import CurrencyInput from "react-native-currency-input"
 
-export function FormEntryAddCategory() {
+type FormEntryEditItemProps = {
+  isVisible: boolean,
+  onClose: () => void,
+  isEditName: boolean,
+  isEditValue: boolean,
+  expenseId: number,
+  expenseOldValue: number,
+  expenseOldName: string
+}
+
+export function FormEntryEditItem({
+  isVisible,
+  onClose,
+  isEditName,
+  isEditValue,
+  expenseId, 
+  expenseOldValue,
+  expenseOldName
+}: FormEntryEditItemProps) {
   const {
-    CreateCategory
-  } = useContext(CategoriesContext)
+    ChangeExpenseName,
+    ChangeExpenseValue
+  } = useContext(ExpensesContext)
 
-  const {handleAddCategory, isAddCategory} = useContext(ModalContext)
-
-  const [name, setName] = useState('')
+  const [name, setName] = useState(expenseOldName)
+  const [value, setValue] = useState(expenseOldValue)
   
-  function SubmitPayments() {
-    CreateCategory(name) 
-    handleAddCategory()
+  function SubmitEdition() {
+    if (isEditName) {
+      ChangeExpenseName(expenseId, name) 
+    }
+    if (isEditValue) {
+      ChangeExpenseValue(expenseId, value) 
+    }
+
+    onClose()
   }
   
   const [isSubmit, setIsSubmit] = useState(false)
@@ -32,30 +57,41 @@ export function FormEntryAddCategory() {
   }, [name])
 
   return (
-    <ModalCustom isVisible={isAddCategory}>
+    <ModalCustom isVisible={isVisible}>
       <View style={styles.formEntry}>
-        
           <View style={styles.header}>
-            <Text style={styles.headerText}>Cadastrar categoria</Text>
+            <Text style={styles.headerText}>{
+              isEditName ? 'Editar Nome' : 'Editar Valor'
+            }</Text>
             <TouchableOpacity 
               style={styles.modalCloseButton}
-              onPress={() => handleAddCategory()}
+              onPress={() => onClose()}
             >
               <Text style={styles.modalCloseText}>X</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.formContent}>
             <KeyboardAwareScrollView>
-              <TextInput 
-                style={styles.input}
-                placeholder="Nome da Categoria"
-                aria-label="name"
-                onChangeText={setName}
-                value={name}
-              />
+              {
+                isEditName ? 
+                <TextInput 
+                  style={styles.input}
+                  placeholder="Nome da Categoria"
+                  aria-label="name"
+                  onChangeText={setName}
+                  value={name}
+                />
+                : 
+                <CurrencyInput 
+                  style={styles.input}
+                  value={value}
+                  onChangeValue={(text: number) => setValue(text || 0)}
+                  prefix="R$"
+                />
+              }
             </KeyboardAwareScrollView>
             <TouchableOpacity 
-              onPress={SubmitPayments}
+              onPress={SubmitEdition}
               style={styles.submitButton}
               disabled={!isSubmit}
             >

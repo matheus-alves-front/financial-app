@@ -5,6 +5,8 @@ export type ExpensesType = {
   isEntry: boolean
   isFixed: boolean
   category: string 
+  expiresInMonth?: number
+  expiresInYear?: number
 }
 
 export type MonthType = {

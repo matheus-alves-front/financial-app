@@ -8,7 +8,7 @@ import { LoadingContext } from "./LoadingContext";
 
 type CategoriesContextTypes = {
   categories: CategoryType[]
-  IncludeCategory: (name: string) => void
+  CreateCategory: (name: string) => void
   UpdateCategories: (profileId: number) => void
 }
 
@@ -31,7 +31,7 @@ export function CategoriesContextProvider({children}: CategoriesContextProviderT
     UpdateCategories(profile.id)
   }, [profile])
 
-  async function IncludeCategory(name: string) {
+  async function CreateCategory(name: string) {
     if (!profile) return
 
     let postCategory = null
@@ -68,7 +68,7 @@ export function CategoriesContextProvider({children}: CategoriesContextProviderT
   return (
     <CategoriesContext.Provider value={{
       categories,
-      IncludeCategory,
+      CreateCategory,
       UpdateCategories
     }}>
       {children}

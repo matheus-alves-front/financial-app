@@ -49,7 +49,7 @@ export function ExpensesBoard() {
 
       {section === 'Variáveis' && 
         <>
-          {expenses.length ? null : <Text  style={styles.noExpensesMessage}>Você ainda não adicionou itens</Text>}
+          {expenses.length ? null : <Text style={styles.noExpensesMessage}>Você ainda não adicionou itens</Text>}
           <FlatList 
             data={expenses}
             style={styles.expensesList}
@@ -66,7 +66,7 @@ export function ExpensesBoard() {
             renderItem={({item}) => <ExpenseItem expense={item} />}
             />
             :
-            <Text  style={styles.noExpensesMessage}>Você ainda não adicionou gastos fixos</Text>
+            <Text style={styles.noExpensesMessage}>Você ainda não adicionou gastos fixos</Text>
           }
         </>
       }
@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
   },
   expensesList: {
     width: '100%',
+    marginBottom: 50
   },
   noExpensesMessage: {
     textAlign: 'center'

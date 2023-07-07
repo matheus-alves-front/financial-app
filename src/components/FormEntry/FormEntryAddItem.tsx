@@ -64,7 +64,7 @@ export function FormEntryAddItem() {
   ])
 
   useEffect(() => {
-    setNumberOfInstallments('1')
+    setNumberOfInstallments('0')
   }, [isEntry, isInstallments, isFixed])
 
   useEffect(() => {
@@ -111,7 +111,7 @@ export function FormEntryAddItem() {
                 onPress={() => setIsEntry(true)}
               >
                 <Text style={styles.buttonText}>Entrada</Text>
-                <ExpenseIcon isEntry={true} />
+                <ExpenseIcon width={30} height={30} isEntry={true} />
               </TouchableOpacity>
               <TouchableOpacity 
                 style={[
@@ -120,7 +120,7 @@ export function FormEntryAddItem() {
                 ]}
                 onPress={() => setIsEntry(false)}
               >
-                <ExpenseIcon isEntry={false} />
+                <ExpenseIcon width={30} height={30} isEntry={false} />
                 <Text style={styles.buttonText}>Saída</Text>
               </TouchableOpacity>
             </View>

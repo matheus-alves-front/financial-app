@@ -52,6 +52,10 @@ export function ProfileContextProvider({
         },
         body: JSON.stringify(data)
       })
+      
+      setTimeout(() => {
+        handleLoading(false, '')
+      }, 1000)
     }
     const profileSent = await postProfile.json()
 

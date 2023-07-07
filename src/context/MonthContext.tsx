@@ -33,6 +33,11 @@ export function MonthContextProvider({
 
   const [month, setMonth] = useState<MonthType>(initialMonthProps as MonthType)
 
+  useEffect(() => {
+
+    console.log(month)
+  }, [month])
+  
   async function UpdateMonth() {
     if (!profile) return
 
